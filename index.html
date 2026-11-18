@@ -81,9 +81,9 @@ dialog::backdrop{background:rgba(28,24,18,.5)}
     <nav>
       <a href="#books">古籍库</a>
       <a href="#features">功能</a>
-      <a href="#data">资料</a>
+      <a href="#getbooks">获取文本</a>
+      <a href="#contact">联系</a>
       <a href="#download">下载</a>
-      <a href="#about">关于</a>
     </nav>
   </div>
 </header>
@@ -93,7 +93,7 @@ dialog::backdrop{background:rgba(28,24,18,.5)}
     <div>
       <h1>把古籍<em>读薄</em>，<br>把检索<em>做深</em>。</h1>
       <p>科文中医是一款面向中医学习者的古籍检索与阅读工具。按段落定位、按词库归类，医案、本草、方术一部不落。</p>
-      <p>本页公开的是<strong>书目资料</strong>：书名、分类、段落与字数。正文请在 App 内自行导入后阅读。</p>
+      <p>本站提供<strong>书目资料与使用说明</strong>，不提供古籍全文：正文请自行准备（公版古籍），在 App 内一键导入即可检索阅读。</p>
       <div class="btns">
         <a class="btn primary" href="#books">浏览古籍库</a>
         <a class="btn" href="#download">获取 App</a>
@@ -133,16 +133,24 @@ dialog::backdrop{background:rgba(28,24,18,.5)}
   </div>
 </section>
 
-<section id="data">
-  <h2>古籍资料</h2>
-  <div class="sub">这里放书目资料与整理成果；正文版权归原书及整理者，本站不提供全文下载。</div>
+<section id="getbooks">
+  <h2>如何获得古籍文本</h2>
+  <div class="sub">本站不提供全文，但可以帮你把文本准备好、导入 App。</div>
   <div class="note">
-    <b>已公开・书目资料</b><br>
-    128 部古籍的书名、分类、段落数、字数与章节数，可按分类和关键词检索，适合做选题、查版本、核对篇目。<br><br>
-    <b>整理中・可陆续补充</b><br>
-    版本说明、校勘记、术语表、词条索引、脉象与方剂的结构化整理结果。<br><br>
-    <b>关于正文</b><br>
-    为尊重版权与出版管理规定，本站不直接提供古籍全文。需要全文检索时，请在 App 内导入你合法持有的文本文件。
+    <b>一、支持的格式</b><br>
+    TXT（最推荐）· Markdown · DOCX · PDF · HTML · JSON / CSV；也支持 App 导出的数据包 <code>.kwpack</code>。<br>
+    PDF 需为文字版（扫描图片版无法直接识别）；乱码时把文件另存为 UTF-8 编码即可。
+  </div>
+  <div class="feats" style="margin-top:14px">
+    <div class="feat"><h3>1 · 找公版文本</h3><p>优先使用公版（作者去世满 50 年）的古籍原文：自己扫描录入、公版影印本转录，或公开的古籍文本库。请避开现代整理本的标点、校勘与注释。</p></div>
+    <div class="feat"><h3>2 · 整理成文件</h3><p>一部书一个文件，文件名用书名；章节标题单独成行；段落之间空一行。TXT 存 UTF-8 最稳。</p></div>
+    <div class="feat"><h3>3 · 导入 App</h3><p>App 内「导入自建古籍」选择文件，自动分章分段、建索引，完成后即可全文检索与跳转原文。</p></div>
+  </div>
+  <div class="note" style="margin-top:14px">
+    <b>二、常见文本来源（自行判断版权与可用性）</b><br>
+    · 中国哲学书电子化计划（ctext.org）· 中华古籍资源库 · 国学网 · 殆知阁等公开古籍库；<br>
+    · 自己或朋友手中的公版影印本、扫描件（需先转成文字）；<br>
+    · 本站 App 内「导出数据包」得到的 <code>.kwpack</code>，可在另一台设备导入。
   </div>
 </section>
 
@@ -156,13 +164,36 @@ dialog::backdrop{background:rgba(28,24,18,.5)}
   </div>
 </section>
 
+<section id="contact">
+  <h2>联系我们</h2>
+  <div class="sub">找不到某一部书的合适文本、导入报错、格式不对，都可以找我们。</div>
+  <div class="dl">
+    <div class="dlcard">
+      <h3>微信公众号</h3>
+      <p>扫码关注后回复「古籍」，我们协助你确认书名、版本与可用的文本来源；导入失败也可以把文件发来帮你看。</p>
+      <div id="qrbox" style="width:180px;height:180px;border:1px dashed #d8c9b2;border-radius:12px;display:grid;place-items:center;color:#9a9183;font-size:12.5px;text-align:center;padding:10px;background:#fbf7ee">公众号二维码<br>（待上传）</div>
+      <p style="margin-top:10px;font-size:12.5px;color:#9a9183">公众号名称：科文中医（暂定，可在 <code>index.html</code> 中替换二维码图片与名称）</p>
+    </div>
+    <div class="dlcard">
+      <h3>邮件</h3>
+      <p>适合发送较大的文件或详细描述问题。</p>
+      <p style="font-size:14px"><b>support@kewen.local</b>（占位，可替换为你的邮箱）</p>
+      <p style="font-size:12.5px;color:#9a9183">我们会在 1–2 个工作日内回复。</p>
+    </div>
+    <div class="dlcard">
+      <h3>版权与下架</h3>
+      <p>本站仅提供书目元数据，不含古籍正文。如你认为某条信息涉及权利争议，可通过以上方式联系我们，核实后删除。</p>
+    </div>
+  </div>
+</section>
+
 <section id="about">
   <h2>关于与声明</h2>
   <div class="note">
     <b>医疗免责声明</b><br>
     本应用为古籍检索与阅读工具，不提供医疗诊断、治疗方案或用药建议。古籍内容由使用者自行导入，可能存在错误、脱漏或过时之处；AI 生成内容可能不准确。如有健康问题，请咨询执业医师；请勿依据本应用自行用药或延误就医。<br><br>
-    <b>内容与版权</b><br>
-    本站仅公开书目元数据。古籍正文及其整理成果的权利归原权利人所有；如权利人认为本站信息不当，可联系我们删除。<br><br>
+    <b>内容说明</b><br>
+    本站仅公开书目元数据（书名、分类、段落数、字数），不存储、不提供古籍全文。App 内的正文由使用者自行导入，仅保存在本机。<br><br>
     <b>隐私</b><br>
     App 内导入的内容仅保存在本机；AI 功能仅在使用者主动配置自己的模型密钥时联网。
   </div>

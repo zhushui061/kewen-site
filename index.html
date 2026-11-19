@@ -371,13 +371,11 @@ document.addEventListener('DOMContentLoaded', function(){
 <div id="kwDlFix"></div>
 <script id="kw-dl-flow">
 (function(){
-  var MAIL = '1747529039@qq.com';
   var TF = 'https://testflight.apple.com/join/7K8RWTs2';
 
   function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
 
   ready(function(){
-    /* iOS 卡片：公测中，点按钮直接给 TestFlight */
     document.querySelectorAll('#download .dlcard').forEach(function(c){
       var h = c.querySelector('h3');
       if (!h || !/iOS/i.test(h.textContent)) return;
@@ -388,27 +386,20 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   });
 
-  window.kwBuy = function(sku){
-    var titles = { win: 'Windows 安装包', apk: '安卓 APK', ios: 'iOS 公测（TestFlight）' };
-    var t = document.getElementById('payTitle');
-    if (t) t.textContent = (titles[sku] || '安装包') + ' · ¥99';
-    var st = document.getElementById('payState');
-    if (st) st.innerHTML = '扫码支付 ¥99 后，把<b>付款截图</b>发到邮箱<br><b>' + MAIL + '</b><br>确认到账后回复下载链接。';
+  window.kwClose = function(){
+    var m = document.getElementById('payModal');
+    if (m) m.style.display = 'none';
+  };
 
-    /* 移除手机号与截图选择 */
-    ['kwPhone','kwShot','kwShotName'].forEach(function(id){
-      var e = document.getElementById(id);
-      if (e && e.parentNode) e.parentNode.removeChild(e);
-    });
-
-    /* 只留「关闭」 */
-    var modal = document.getElementById('payModal');
-    if (modal) {
-      modal.querySelectorAll('button').forEach(function(b){
-        if (b.textContent.indexOf('关闭') < 0) b.style.display = 'none';
-      });
-      modal.style.display = 'flex';
-    }
+  window.kwBuy = function(){
+    var m = document.getElementById('payModal');
+    if (!m) return;
+    m.innerHTML = '<div style="position:relative;background:#fff;border-radius:18px;padding:14px">' +
+      '<button onclick="kwClose()" aria-label="关闭" style="position:absolute;right:8px;top:4px;border:0;background:transparent;font-size:24px;line-height:1;color:#8b96ab;cursor:pointer">×</button>' +
+      '<img src="pay-qr.jpg" alt="微信支付 ¥99" style="width:min(78vw,300px);display:block;border-radius:12px">' +
+      '</div>';
+    m.style.display = 'flex';
+    m.onclick = function(e){ if (e.target === m) kwClose(); };
   };
 })();
 </script>

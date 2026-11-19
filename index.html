@@ -371,57 +371,21 @@ document.addEventListener('DOMContentLoaded', function(){
 <div id="kwDlFix"></div>
 <script id="kw-dl-flow">
 (function(){
-  var WIN = "https://github.com/zhushui061/kewen-downloads/releases/download/v1.6.1-b11/kewen-tcm-1.6.1-win-x64.zip";
-  var APK = "https://github.com/zhushui061/kewen-downloads/releases/download/v1.6.1-b11/kewen-tcm-1.6.1-android-v21.apk";
-  var PKG_PAGE = "download.html";
+  var MAIL = '1747529039@qq.com';
+  var TF = 'https://testflight.apple.com/join/7K8RWTs2';
 
   function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
 
   ready(function(){
-    /* 1) iOS 卡片：公测中，走付费申请 */
-    var cards = document.querySelectorAll('#download .dlcard');
-    cards.forEach(function(c){
+    /* iOS 卡片：公测中，点按钮直接给 TestFlight */
+    document.querySelectorAll('#download .dlcard').forEach(function(c){
       var h = c.querySelector('h3');
-      if (!h) return;
-      if (/iOS/i.test(h.textContent)) {
-        var lock = c.querySelector('.lock');
-        if (lock) lock.textContent = '公测中 · 凭公测链接下载';
-        var a = c.querySelector('a.btn');
-        if (a) {
-          var b = document.createElement('button');
-          b.className = 'btn primary';
-          b.textContent = '申请公测 / 付费获取';
-          b.onclick = function(){ window.kwBuy('ios'); };
-          a.parentNode.replaceChild(b, a);
-        }
-      }
+      if (!h || !/iOS/i.test(h.textContent)) return;
+      var lock = c.querySelector('.lock');
+      if (lock) lock.textContent = '公测中 · 付费后发公测链接';
+      var a = c.querySelector('a.btn');
+      if (a) { a.href = TF; a.target = '_blank'; a.rel = 'noopener'; a.textContent = '打开 TestFlight 公测'; }
     });
-
-    /* 2) 弹窗加入手机号 + 付款截图 */
-    var modal = document.getElementById('payModal');
-    if (modal && !document.getElementById('kwPhone')) {
-      var box = document.createElement('div');
-      box.style.cssText = 'text-align:left;margin-top:10px';
-      box.innerHTML =
-        '<div style="font-size:12.5px;color:#55617a;margin-bottom:4px">手机号（接收下载/公测链接）</div>' +
-        '<input id="kwPhone" inputmode="numeric" placeholder="请输入手机号" style="width:100%;height:40px;border:1px solid #e2e8f4;border-radius:10px;padding:0 12px;font:inherit">' +
-        '<div style="font-size:12.5px;color:#55617a;margin:10px 0 4px">付款截图（本地保存，不自动上传）</div>' +
-        '<input id="kwShot" type="file" accept="image/*" style="font-size:13px">' +
-        '<div id="kwShotName" style="font-size:12px;color:#8b96ab;margin-top:4px"></div>';
-      var state = document.getElementById('payState');
-      modal.querySelector('div').insertBefore(box, state);
-      var shot = box.querySelector('#kwShot');
-      shot.onchange = function(){
-        document.getElementById('kwShotName').textContent = shot.files[0] ? ('已选择：' + shot.files[0].name) : '';
-      };
-    }
-
-    /* 3) 提交：复制信息并联系作者 */
-    var btn = document.querySelector('#payModal button.btn:not(.primary)');
-    if (btn) {
-      btn.textContent = '我已支付，发送信息';
-      btn.onclick = function(){ submitPay(); };
-    }
   });
 
   window.kwBuy = function(sku){
@@ -429,32 +393,22 @@ document.addEventListener('DOMContentLoaded', function(){
     var t = document.getElementById('payTitle');
     if (t) t.textContent = (titles[sku] || '安装包') + ' · ¥99';
     var st = document.getElementById('payState');
-    if (st) st.textContent = '扫码支付后填写手机号并发送付款截图';
-    var p = document.getElementById('kwPhone'); if (p) p.value = '';
-    var sh = document.getElementById('kwShot'); if (sh) sh.value = '';
-    var sn = document.getElementById('kwShotName'); if (sn) sn.textContent = '';
-    var m = document.getElementById('payModal'); if (m) m.style.display = 'flex';
-    window.__kwSku = sku;
-  };
+    if (st) st.innerHTML = '扫码支付 ¥99 后，把<b>付款截图</b>发到邮箱<br><b>' + MAIL + '</b><br>确认到账后回复下载链接。';
 
-  var SUPABASE_URL = "";       // 例如 https://xxxx.supabase.co
-  var SUPABASE_KEY = "";       // anon public key
-  window.SUBMIT_ENDPOINT = "";
+    /* 移除手机号与截图选择 */
+    ['kwPhone','kwShot','kwShotName'].forEach(function(id){
+      var e = document.getElementById(id);
+      if (e && e.parentNode) e.parentNode.removeChild(e);
+    });
 
-  window.submitPay = async function(){
-    var sku = window.__kwSku || '';
-    var names = { win: 'Windows 安装包', apk: '安卓 APK', ios: 'iOS 公测链接' };
-    var phone = (document.getElementById('kwPhone') || {}).value || '';
-    var shot = document.getElementById('kwShot');
-    var hasShot = !!(shot && shot.files && shot.files[0]);
-    var st = document.getElementById('payState');
-    if (!/^1\d{10}$/.test(phone)) { if (st) st.textContent = '请填写 11 位手机号'; return; }
-    var txt = '科文中医 ' + (names[sku] || '') + ' 已支付 ¥99，手机号：' + phone;
-
-    try { navigator.clipboard.writeText(txt); } catch(e) {}
-    var mail = 'mailto:1747529039@qq.com?subject=' + encodeURIComponent('科文中医 已付款 ' + (names[sku] || '')) +
-               '&body=' + encodeURIComponent('商品：' + (names[sku] || '') + '\n手机号：' + phone + '\n\n（请把付款截图作为附件一起发送）');
-    if (st) st.innerHTML = '请把<b>手机号 + 付款截图</b>发到邮箱：<br><a href="' + mail + '" style="color:#2563eb;font-weight:700">1747529039@qq.com</a><br>作者确认到账后，会邮件回复你<b>下载页链接</b>（或 iOS 公测链接）。<br><small>点击邮箱可直接带上手机号</small>';
+    /* 只留「关闭」 */
+    var modal = document.getElementById('payModal');
+    if (modal) {
+      modal.querySelectorAll('button').forEach(function(b){
+        if (b.textContent.indexOf('关闭') < 0) b.style.display = 'none';
+      });
+      modal.style.display = 'flex';
+    }
   };
 })();
 </script>

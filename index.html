@@ -184,8 +184,8 @@ dialog::backdrop{background:rgba(28,24,18,.5)}
   </div>
   <div class="note" style="margin-top:16px">
     <b>支付说明</b><br>
-    扫码支付 ¥99（微信），页面会自动检测支付结果，成功后立即显示对应安装包下载按钮，无需人工审核。<br>
-    若支付后 1 分钟仍未解锁，请点「我已支付」刷新，或通过下方微信联系我们，凭支付截图人工开通。<br>
+    扫码支付 ¥99（微信），支付后发送手机号与付款截图到邮箱，人工确认后发送下载链接。<br>
+    支付后请把<b>手机号 + 付款截图</b>发到邮箱 <b>1747529039@qq.com</b>，作者确认到账后会邮件回复下载链接。<br>
     安装包仅授权购买者本人使用；购买后可在同一设备多次安装。
   </div>
 </section>
@@ -297,7 +297,7 @@ render();
       <button class="btn" onclick="kwCheck()">我已支付</button>
       <button class="btn" onclick="kwClose()">关闭</button>
     </div>
-    <div style="margin-top:10px;font-size:12px;color:#8b96ab">支付遇到问题？加公众号「铁锅炖学派」联系作者</div>
+    <div style="margin-top:10px;font-size:12px;color:#8b96ab">支付遇到问题？发邮件到 1747529039@qq.com</div>
   </div>
 </div>
 <script>
@@ -451,40 +451,10 @@ document.addEventListener('DOMContentLoaded', function(){
     if (!/^1\d{10}$/.test(phone)) { if (st) st.textContent = '请填写 11 位手机号'; return; }
     var txt = '科文中医 ' + (names[sku] || '') + ' 已支付 ¥99，手机号：' + phone;
 
-    if (SUPABASE_URL && SUPABASE_KEY) {
-      try {
-        if (st) st.textContent = '正在提交…';
-        var shotUrl = '';
-        if (hasShot) {
-          var f = shot.files[0];
-          var ext = (f.name.split('.').pop() || 'jpg').toLowerCase();
-          var path = 'shots/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '.' + ext;
-          var up = await fetch(SUPABASE_URL + '/storage/v1/object/kw-orders/' + path, {
-            method: 'POST',
-            headers: { 'Authorization': 'Bearer ' + SUPABASE_KEY, 'apikey': SUPABASE_KEY, 'Content-Type': f.type || 'image/jpeg', 'x-upsert': 'true' },
-            body: f
-          });
-          if (up.ok) shotUrl = SUPABASE_URL + '/storage/v1/object/public/kw-orders/' + path;
-        }
-        var r = await fetch(SUPABASE_URL + '/rest/v1/kw_orders', {
-          method: 'POST',
-          headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-          body: JSON.stringify({ phone: phone, sku: sku, shot_url: shotUrl, note: names[sku] || '' })
-        });
-        if (r.ok) {
-          if (st) st.innerHTML = '已提交，等待作者确认。<br>确认后会把下载页或公测链接发到你手机。<br><small>手机号：' + phone + '</small>';
-          return;
-        }
-        if (st) st.textContent = '提交失败，请加公众号「铁锅炖学派」发送截图';
-        return;
-      } catch (e) {
-        if (st) st.textContent = '网络异常，请加公众号「铁锅炖学派」发送截图';
-        return;
-      }
-    }
-
     try { navigator.clipboard.writeText(txt); } catch(e) {}
-    if (st) st.innerHTML = '信息已复制：<b>' + phone + '</b><br>请关注公众号「铁锅炖学派」，把<b>付款截图 + 手机号</b>发给我们，<br>作者确认后会把<b>下载页链接</b>（或 iOS 公测链接）发给你。';
+    var mail = 'mailto:1747529039@qq.com?subject=' + encodeURIComponent('科文中医 已付款 ' + (names[sku] || '')) +
+               '&body=' + encodeURIComponent('商品：' + (names[sku] || '') + '\n手机号：' + phone + '\n\n（请把付款截图作为附件一起发送）');
+    if (st) st.innerHTML = '请把<b>手机号 + 付款截图</b>发到邮箱：<br><a href="' + mail + '" style="color:#2563eb;font-weight:700">1747529039@qq.com</a><br>作者确认到账后，会邮件回复你<b>下载页链接</b>（或 iOS 公测链接）。<br><small>点击邮箱可直接带上手机号</small>';
   };
 })();
 </script>

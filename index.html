@@ -382,7 +382,13 @@ document.addEventListener('DOMContentLoaded', function(){
       var lock = c.querySelector('.lock');
       if (lock) lock.textContent = '公测中 · 付费后发公测链接';
       var a = c.querySelector('a.btn');
-      if (a) { a.href = TF; a.target = '_blank'; a.rel = 'noopener'; a.textContent = '打开 TestFlight 公测'; }
+      if (a) {
+        var b = document.createElement('button');
+        b.className = 'btn primary';
+        b.textContent = '扫码支付后获取公测链接';
+        b.onclick = function(){ window.kwBuy('ios'); };
+        a.parentNode.replaceChild(b, a);
+      }
     });
   });
 

@@ -3,77 +3,85 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>科文中医 · 古籍检索</title>
-<meta name="description" content="科文中医：面向中医学习者的古籍检索与阅读工具。收录 128 部古籍的书目资料：136 万段、1614 万字，按本草、方术、医案分类。">
+<title>科文中医 · 把中医古籍拆成可检索的证据</title>
+<meta name="description" content="科文中医：面向中医临床学习者的古籍拆解系统。以药名、病名、症状、证名、舌象、脉象、方名七类核心词检索，按段落呈现，支持辨证、星图与可溯源的 RAG 问答。">
 <style>
-:root{--bg:#f4f7fd;--panel:#ffffff;--ink:#152036;--ink2:#55617a;--ink3:#8b96ab;--line:#e2e8f4;--accent:#2563eb;--soft:#e8f0ff;--gold:#2563eb}
+:root{--bg:#f4f7fd;--panel:#fff;--ink:#152036;--ink2:#55617a;--ink3:#8b96ab;--line:#e2e8f4;--accent:#2563eb;--accent2:#1d4ed8;--soft:#e8f0ff}
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font:16px/1.8 "Songti SC","SimSun",-apple-system,"PingFang SC","Microsoft YaHei",serif}
+body{background:var(--bg);color:var(--ink);font:16px/1.85 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
 a{color:var(--accent);text-decoration:none}
-header{position:sticky;top:0;z-index:50;background:rgba(251,247,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.nav{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:12px 20px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--accent);letter-spacing:.08em;font-size:18px}
-.logo .mark{width:30px;height:30px;border-radius:8px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:15px}
-.nav nav{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
-.nav nav a{padding:6px 13px;border-radius:999px;color:var(--ink2);font-size:14px}
-.nav nav a:hover{background:var(--soft);color:var(--accent)}
-.hero{background:linear-gradient(180deg,#eef4ff,#f6f9ff);border-bottom:1px solid var(--line)}
-.hero .wrap{max-width:1120px;margin:0 auto;padding:64px 20px 56px;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
-.hero h1{font-size:42px;line-height:1.25;margin:0 0 14px;letter-spacing:.04em}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{max-width:1140px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:12px 20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--accent);font-size:17px;letter-spacing:.04em}
+.logo .mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;display:grid;place-items:center;font-size:15px}
+nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+nav a{padding:6px 12px;border-radius:999px;color:var(--ink2);font-size:14px}
+nav a:hover{background:var(--soft);color:var(--accent)}
+.wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+.hero{background:linear-gradient(180deg,#eaf1ff,#f7faff 70%,#f4f7fd);border-bottom:1px solid var(--line)}
+.hero-in{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center;padding:64px 0 56px}
+.hero h1{font-size:44px;line-height:1.22;margin:0 0 16px;letter-spacing:.01em}
 .hero h1 em{font-style:normal;color:var(--accent)}
-.hero p{color:var(--ink2);font-size:16.5px;margin:0 0 10px;max-width:34em}
-.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:15px}
+.hero .lead{font-size:17px;color:var(--ink2);margin:0 0 12px;max-width:33em}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:15px;cursor:pointer}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
 .btn:hover{transform:translateY(-1px)}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
-.stat{padding:10px 12px;border-radius:12px;background:#f2f6ff}
-.stat b{display:block;font-size:26px;color:var(--accent);font-family:"Helvetica Neue",Arial,sans-serif;letter-spacing:.02em}
+.hero-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 24px 60px rgba(30,70,160,.10)}
+.hero-card img{width:100%;border-radius:12px;display:block}
+.hero-card .cap{font-size:12.5px;color:var(--ink3);text-align:center;margin-top:8px}
+section{padding:64px 0}
+h2{font-size:28px;margin:0 0 8px;letter-spacing:.02em}
+.sub{color:var(--ink3);font-size:14px;margin-bottom:26px}
+.lead2{font-size:16.5px;color:var(--ink2);max-width:44em}
+.pain{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:22px}
+.pain div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.pain b{display:block;font-size:15.5px;margin-bottom:6px;color:var(--accent2)}
+.pain p{margin:0;color:var(--ink2);font-size:14px}
+.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.feat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.feat .ico{width:34px;height:34px;border-radius:10px;background:var(--soft);color:var(--accent);display:grid;place-items:center;font-size:16px;margin-bottom:12px}
+.feat h3{margin:0 0 6px;font-size:17px}
+.feat p{margin:0;color:var(--ink2);font-size:14.2px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.gallery img{width:100%;border-radius:14px;border:1px solid var(--line);cursor:zoom-in;background:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:20px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+.stat b{display:block;font-size:26px;color:var(--accent);font-family:"Helvetica Neue",Arial,sans-serif}
 .stat span{font-size:12.5px;color:var(--ink3)}
-section{max-width:1120px;margin:0 auto;padding:52px 20px}
-h2{font-size:26px;margin:0 0 6px;letter-spacing:.04em}
-.sub{color:var(--ink3);font-size:13.5px;margin-bottom:22px}
-.tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
-.tools input{flex:1 1 240px;height:42px;border:1px solid var(--line);border-radius:11px;padding:0 14px;font:inherit;background:var(--panel)}
-.chip{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:7px 15px;font-size:14px;cursor:pointer}
-.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px 16px;cursor:pointer}
-.card:hover{border-color:#d8c9b2;box-shadow:0 4px 16px rgba(90,70,40,.08)}
-.card .nm{font-size:16px;font-weight:700;margin-bottom:4px}
-.card .mt{color:var(--ink3);font-size:12.5px}
-.card .tag{display:inline-block;font-size:11.5px;padding:1px 8px;border-radius:999px;background:var(--soft);color:var(--accent);margin-right:6px}
-.more{text-align:center;margin-top:18px}
-.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-.feat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
-.feat h3{margin:0 0 6px;font-size:16.5px}
-.feat p{margin:0;color:var(--ink2);font-size:14px}
-.note{background:#eef4ff;border:1px solid #d6e3ff;border-radius:14px;padding:18px 20px;color:#24406e;font-size:14px;line-height:1.9}
-.note b{color:#1d4ed8}
-.dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.dlcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
-.paid{position:relative}
-.paid .price{position:absolute;right:14px;top:14px;background:var(--soft);color:var(--accent);border-radius:999px;padding:2px 10px;font-size:12.5px;font-weight:700}
-.lock{display:flex;align-items:center;gap:6px;color:var(--ink3);font-size:12.5px;margin-top:8px}
-.dlcard h3{margin:0 0 4px;font-size:16px}
-.dlcard p{margin:0 0 12px;color:var(--ink2);font-size:13.5px}
-footer{border-top:1px solid var(--line);background:#eef3fc;padding:26px 20px;color:var(--ink3);font-size:12.5px}
-footer .wrap{max-width:1120px;margin:0 auto;display:flex;gap:16px;flex-wrap:wrap}
-dialog{border:0;border-radius:16px;padding:0;max-width:620px;width:92%;background:var(--panel);color:var(--ink);box-shadow:0 24px 70px rgba(0,0,0,.25)}
-dialog::backdrop{background:rgba(28,24,18,.5)}
-.dlg{padding:22px 24px}
-.dlg h3{margin:0 0 4px;font-size:21px}
-.dlg .meta{color:var(--ink3);font-size:13px;margin-bottom:14px}
-.dlg table{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 14px}
-.dlg td{border-bottom:1px solid var(--line);padding:7px 4px}
-.dlg td:first-child{color:var(--ink3);width:96px}
-.dlg .close{margin-top:6px}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:20px;counter-reset:s}
+.flow div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;position:relative}
+.flow div::before{counter-increment:s;content:counter(s);position:absolute;right:14px;top:10px;font-size:26px;color:#e3ebfd;font-weight:800}
+.flow b{font-size:15px}
+.flow p{margin:4px 0 0;font-size:13.8px;color:var(--ink2)}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.plan{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+.plan .tagb{display:inline-block;background:var(--soft);color:var(--accent);border-radius:999px;padding:2px 10px;font-size:12px;margin-bottom:10px}
+.plan h3{margin:0 0 4px;font-size:18px}
+.plan .price{font-size:30px;color:var(--accent);font-weight:800;margin:6px 0 2px}
+.plan .price small{font-size:13px;color:var(--ink3);font-weight:400}
+.plan ul{margin:10px 0 16px 18px;padding:0;color:var(--ink2);font-size:14px}
+.plan li{margin:4px 0}
+.note{background:#eef4ff;border:1px solid #d6e3ff;border-radius:14px;padding:16px 18px;color:#24406e;font-size:14px}
+.faq{max-width:820px}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:10px}
+.faq summary{cursor:pointer;font-weight:600;font-size:15px}
+.faq p{margin:8px 0 0;color:var(--ink2);font-size:14px}
+footer{border-top:1px solid var(--line);background:#eef3fc;padding:26px 0;color:var(--ink3);font-size:12.5px}
+footer .wrap{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+dialog{border:0;border-radius:16px;padding:0;background:transparent;max-width:96vw}
+dialog::backdrop{background:rgba(10,20,40,.6)}
+dialog img{max-height:88vh;border-radius:12px;display:block}
+#lightbox{display:none;position:fixed;inset:0;background:rgba(10,20,40,.75);z-index:9998;align-items:center;justify-content:center;padding:16px;cursor:zoom-out}
+#lightbox.on{display:flex}
+#lightbox img{max-width:92vw;max-height:90vh;border-radius:12px}
+#payModal{display:none;position:fixed;inset:0;background:rgba(10,20,40,.55);z-index:9999;align-items:center;justify-content:center;padding:16px}
 @media (max-width:860px){
-  .hero .wrap{grid-template-columns:1fr;padding:36px 18px}
-  .hero h1{font-size:30px}
-  section{padding:36px 18px}
-  h2{font-size:21px}
+  .hero-in{grid-template-columns:1fr;gap:26px;padding:36px 0}
+  .hero h1{font-size:31px}
+  section{padding:42px 0}
+  h2{font-size:22px}
 }
 </style>
 </head>
@@ -82,332 +90,188 @@ dialog::backdrop{background:rgba(28,24,18,.5)}
   <div class="nav">
     <div class="logo"><span class="mark">科</span>科文中医 · 古籍检索</div>
     <nav>
-      <a href="#books">古籍库</a>
+      <a href="#why">为什么</a>
+      <a href="#how">怎么做</a>
       <a href="#features">功能</a>
-      <a href="#getbooks">获取文本</a>
-      <a href="#contact">联系</a>
-      <a href="#download">下载</a>
+      <a href="#shots">界面</a>
+      <a href="#price">价格</a>
+      <a href="#faq">常见问题</a>
     </nav>
   </div>
 </header>
 
 <div class="hero">
-  <div class="wrap">
+  <div class="wrap hero-in">
     <div>
-      <h1>把古籍<em>读薄</em>，<br>把检索<em>做深</em>。</h1>
-      <p>科文中医是一款面向中医学习者的古籍检索与阅读工具。按段落定位、按词库归类，医案、本草、方术一部不落。</p>
-      <p>本站提供<strong>书目资料与使用说明</strong>，不提供古籍全文：正文请自行准备（公版古籍），在 App 内一键导入即可检索阅读。</p>
+      <h1>把中医古籍<br>拆成<em>可检索的证据</em></h1>
+      <p class="lead">古籍原本是自然语言式的铺陈：成篇的比喻、排比、铺叙，真正要查的药名、病名、症状、证名、舌象、脉象、方名，被埋在几百页里。</p>
+      <p class="lead">科文中医把阅读视角换成检索视角——以七类核心词为中心、以段落为单位，直接定位原文，再往上做辨证、星图与可溯源的 AI 问答。</p>
       <div class="btns">
-        <a class="btn primary" href="#books">浏览古籍库</a>
-        <a class="btn" href="#download">获取 App</a>
+        <a class="btn primary" href="#shots">看看界面</a>
+        <a class="btn" href="#price">获取软件</a>
       </div>
     </div>
-    <div class="stats">
-      <div class="stat"><b id="s1">128</b><span>部古籍</span></div>
-      <div class="stat"><b id="s2">271,908</b><span>段正文</span></div>
-      <div class="stat"><b id="s3">1,614 万</b><span>字</span></div>
-      <div class="stat"><b id="s4">2,478</b><span>词条</span></div>
+    <div class="hero-card">
+      <img src="img/s1.jpg" alt="科文中医界面">
+      <div class="cap">检索「白扁豆」：按医案 / 方术 / 本草分类给出命中，点开直达原文段落</div>
     </div>
   </div>
 </div>
 
+<section id="why">
+  <div class="wrap">
+    <h2>为什么不是"又一个电子书阅读器"</h2>
+    <div class="sub">传统古籍数字化的三个卡点</div>
+    <div class="pain">
+      <div><b>查不到</b><p>全文搜索只给你一堆出处，段落要人自己翻；同名词、别名、避名（如"麻"会误中"肢麻""唇麻"）让检索结果又脏又散。</p></div>
+      <div><b>看不透</b><p>一段话里哪些是药、哪些是症、哪些是证，读者要自己标；方名后面没有组成，初学看着费解。</p></div>
+      <div><b>用不上</b><p>通用大模型回答中医问题容易空泛、丢细节、无法核对；说了半天，你找不到它凭哪一段。</p></div>
+    </div>
+    <p class="lead2" style="margin-top:22px">科文中医的全部设计，都是围绕这三个问题反过来做的：<b>让每一条答案都能落回原文某一段</b>。</p>
+  </div>
+</section>
+
+<section id="how" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <h2>做法：以词为骨，以段为肉</h2>
+    <div class="sub">不是把书搬上屏幕，而是把书拆成结构</div>
+    <div class="flow">
+      <div><b>七类核心词</b><p>药名、病名、症状、证名、舌象、脉象、方名。每段在显示前就已算好包含哪些词，按类列在段后。</p></div>
+      <div><b>别名与避名</b><p>同一个药有几十种写法；又有些"别名"会误伤（麻 → 肢麻）。词库同时记录别名与避名，检索才准。</p></div>
+      <div><b>段落为单位</b><p>结果不是"某书某页"，而是可直接读的段落；上下可展开相邻段，前后文一起看。</p></div>
+      <div><b>可自己改</b><p>词库开放编辑：长按选中古汉语词，一键入库、加别名、加避名，都保存在本机。</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <h2>四个模块，一条链路</h2>
+    <div class="sub">检索 → 辨证 → 星图 → RAG，逐层往上</div>
+    <div class="feats">
+      <div class="feat"><div class="ico">检</div><h3>段落检索</h3><p>输入药名、病名等任一类词，直接列出所有包含它的段落，按医案 / 方术 / 本草分类计数，点书看原文、点目录跳章节。</p></div>
+      <div class="feat"><div class="ico">辨</div><h3>辨证 · 多词共现</h3><p>同时检索多个要素（如"脉细 + 舌红 + 盗汗"），只返回同时包含这些词的段落——这是临床辨证的检索辅助。</p></div>
+      <div class="feat"><div class="ico">星</div><h3>星图 · 共现关系</h3><p>用算法算出词与词在古籍中的共现关系，按共现数量分级成图：总图、交叉图、分类图，任一节点都能跳回真实共现的段落。</p></div>
+      <div class="feat"><div class="ico">AI</div><h3>RAG · 可溯源问答</h3><p>接入你自己的大模型 API，回答限定在古籍证据范围内，每条结论都可点击跳转到支持它的原文，幻觉有处可查。</p></div>
+      <div class="feat"><div class="ico">药</div><h3>药物排序</h3><p>方中药物按分类库顺序显示（补泻、升降浮沉一目了然），分类与顺序都可自己调整。</p></div>
+      <div class="feat"><div class="ico">方</div><h3>方名展开组成</h3><p>医案常见"只写方名、不见组成"。检索到的方名可直接展开药物组成，也可自行补充、修改。</p></div>
+      <div class="feat"><div class="ico">库</div><h3>小库</h3><p>把某个词的段落单独收进它自己的库，标注古籍来源，适合做专题梳理与再呈现。</p></div>
+      <div class="feat"><div class="ico">包</div><h3>导入 / 导出</h3><p>支持导入自己的 TXT / PDF / DOCX 古籍，也可导出数据包在设备间迁移；可独自使用，也可群组协作整理。</p></div>
+      <div class="feat"><div class="ico">离</div><h3>本地优先</h3><p>导入的文本只存本机；不配置模型密钥时不联网。AI 是否使用，完全由你决定。</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="shots" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <h2>界面一览</h2>
+    <div class="sub">点任意一张看大图</div>
+    <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
 <section id="books">
-  <h2>古籍库</h2>
-  <div class="sub">共 <b id="bcount">128</b> 部，按本草、方术、医案分类。点开可看书目信息。</div>
-  <div class="tools">
-    <input id="q" placeholder="搜索书名，如：伤寒、本草、医案">
-    <button class="chip on" data-cat="全部">全部</button>
-    <button class="chip" data-cat="本草">本草</button>
-    <button class="chip" data-cat="方术">方术</button>
-    <button class="chip" data-cat="医案">医案</button>
-  </div>
-  <div class="grid" id="grid"></div>
-  <div class="more"><button class="btn" id="more">显示更多</button></div>
-</section>
-
-<section id="features">
-  <h2>能做什么</h2>
-  <div class="sub">面向"查得到、对得上、读得下去"设计。</div>
-  <div class="feats">
-    <div class="feat"><h3>全文检索 · 段落定位</h3><p>导入古籍后，检索结果按段落呈现，点一下跳到原文该段，前后文一起看。</p></div>
-    <div class="feat"><h3>八类词库 · 自动归类</h3><p>药名、病名、症状、证名、舌象、脉象、方名等自动标注，可按词反查段落。</p></div>
-    <div class="feat"><h3>医案 · 本草 · 方术</h3><p>按部类整理书目，支持章节、分段、字号与主题，长时间阅读不累。</p></div>
-    <div class="feat"><h3>AI 辅助（可选）</h3><p>使用你自己的大模型密钥，对导入文本做摘要与问答；AI 输出仅供参考，不作为医疗建议。</p></div>
+  <div class="wrap">
+    <h2>古籍库</h2>
+    <div class="sub">内置书目资料可在官网检索；正文由你导入后使用</div>
+    <div class="stats">
+      <div class="stat"><b>128</b><span>部临床核心古籍</span></div>
+      <div class="stat"><b>271,908</b><span>段正文</span></div>
+      <div class="stat"><b>1,614 万</b><span>字</span></div>
+      <div class="stat"><b>2,549</b><span>条术语词</span></div>
+    </div>
+    <p class="lead2" style="margin-top:18px">书目覆盖医案、方术、本草三大类；每部书可按书名、分类、段数与字数筛选。完整书目见官网「古籍库」页面。</p>
+    <div class="btns"><a class="btn" href="index.html#books">查看完整书目</a></div>
   </div>
 </section>
 
-<section id="getbooks">
-  <h2>如何获得古籍文本</h2>
-  <div class="sub">本站不提供全文。你可以自己找公版文本导入；如果找不到，加公众号「铁锅炖学派」联系作者，我们帮你解决。</div>
-  <div class="note">
-    <b>一、支持的格式</b><br>
-    TXT（最推荐）· Markdown · DOCX · PDF · HTML · JSON / CSV；也支持 App 导出的数据包 <code>.kwpack</code>。<br>
-    PDF 需为文字版（扫描图片版无法直接识别）；乱码时把文件另存为 UTF-8 编码即可。
-  </div>
-  <div class="feats" style="margin-top:14px">
-    <div class="feat"><h3>1 · 找公版文本</h3><p>优先使用公版（作者去世满 50 年）的古籍原文：自己扫描录入、公版影印本转录，或公开的古籍文本库。请避开现代整理本的标点、校勘与注释。</p></div>
-    <div class="feat"><h3>2 · 整理成文件</h3><p>一部书一个文件，文件名用书名；章节标题单独成行；段落之间空一行。TXT 存 UTF-8 最稳。</p></div>
-    <div class="feat"><h3>3 · 导入 App</h3><p>App 内「导入自建古籍」选择文件，自动分章分段、建索引，完成后即可全文检索与跳转原文。</p></div>
-  </div>
-  <div class="note" style="margin-top:14px">
-    <b>二、常见文本来源（自行判断版权与可用性）</b><br>
-    · 中国哲学书电子化计划（ctext.org）· 中华古籍资源库 · 国学网 · 殆知阁等公开古籍库；<br>
-    · 自己或朋友手中的公版影印本、扫描件（需先转成文字）；<br>
-    · 本站 App 内「导出数据包」得到的 <code>.kwpack</code>，可在另一台设备导入。
-  </div>
-</section>
-
-<section id="download">
-  <h2>获取 App</h2>
-  <div class="sub">iOS 免费（App Store / TestFlight）；Windows 与安卓安装包为付费版，扫码支付后自动解锁下载。</div>
-  <div class="dl">
-    <div class="dlcard">
-      <h3>iOS / iPadOS</h3>
-      <p>支持 iPhone 与 iPad，iPad 提供三栏阅读布局。当前为公测版，凭 TestFlight 公测链接下载。</p>
-      <a class="btn primary" href="https://testflight.apple.com/join/7K8RWTs2" target="_blank" rel="noopener">打开 TestFlight 公测</a>
-      <div class="lock">公测中 · 也需要付费，付费后发公测链接</div>
+<section id="price" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <h2>获取软件</h2>
+    <div class="sub">一次购买，永久使用；安装包与公测链接在确认付款后发送</div>
+    <div class="plans">
+      <div class="plan">
+        <span class="tagb">桌面</span>
+        <h3>Windows 版</h3>
+        <div class="price">¥99<small> / 一次性</small></div>
+        <ul><li>解压即用，无需安装</li><li>大屏阅读与批量检索</li><li>支持导入自己的古籍</li><li>后续小版本免费更新</li></ul>
+        <button class="btn primary" onclick="kwBuy('win')">扫码支付后下载</button>
+      </div>
+      <div class="plan">
+        <span class="tagb">移动</span>
+        <h3>安卓 APK</h3>
+        <div class="price">¥99<small> / 一次性</small></div>
+        <ul><li>适配手机与平板</li><li>本地导入、离线检索</li><li>词库与小库随身带</li><li>后续小版本免费更新</li></ul>
+        <button class="btn primary" onclick="kwBuy('apk')">扫码支付后下载</button>
+      </div>
+      <div class="plan">
+        <span class="tagb">公测</span>
+        <h3>iOS / iPadOS</h3>
+        <div class="price">¥99<small> / 公测名额</small></div>
+        <ul><li>TestFlight 公测，名额有限</li><li>iPad 三栏阅读布局</li><li>与桌面端同一套词库</li><li>公测期反馈优先处理</li></ul>
+        <button class="btn primary" onclick="kwBuy('ios')">扫码支付后获取公测链接</button>
+      </div>
     </div>
-    <div class="dlcard paid">
-      <span class="price">¥99</span>
-      <h3>Windows 安装包</h3>
-      <p>桌面版，适合大屏阅读与批量检索；一次购买，永久使用。</p>
-      <button class="btn primary" onclick="kwBuy('win')">扫码支付后下载</button>
-      <div class="lock" id="lock-win">未解锁 · 支付后自动显示下载</div>
-    </div>
-    <div class="dlcard paid">
-      <span class="price">¥99</span>
-      <h3>安卓 APK</h3>
-      <p>适配 Android 手机与平板，安装后在本地导入古籍即可检索。</p>
-      <button class="btn primary" onclick="kwBuy('apk')">扫码支付后下载</button>
-      <div class="lock" id="lock-apk">未解锁 · 支付后自动显示下载</div>
-    </div>
-  </div>
-  <div class="note" style="margin-top:16px">
-    <b>支付说明</b><br>
-    扫码支付 ¥99（微信），支付后发送手机号与付款截图到邮箱，人工确认后发送下载链接。<br>
-    支付后请把<b>手机号 + 付款截图</b>发到邮箱 <b>1747529039@qq.com</b>，作者确认到账后会邮件回复下载链接。<br>
-    安装包仅授权购买者本人使用；购买后可在同一设备多次安装。
-  </div>
-</section>
-
-<section id="contact">
-  <h2>联系我们</h2>
-  <div class="sub">找不到某一部书的合适文本、导入报错、格式不对，都可以找我们。</div>
-  <div class="dl">
-    <div class="dlcard">
-      <h3>微信公众号</h3>
-      <p>扫码关注后回复「古籍」，我们协助你确认书名、版本与可用的文本来源；导入失败也可以把文件发来帮你看。</p>
-      <img src="wx-qr.png" alt="微信公众号：铁锅炖学派" style="width:190px;border-radius:12px;border:1px solid var(--line);background:#fff;display:block">
-      <p style="margin-top:10px;font-size:13px"><b>公众号：铁锅炖学派</b></p>
-    </div>
-    <div class="dlcard">
-      <h3>邮件</h3>
-      <p>找不到合适的文本，或导入时出错，把书名和情况发过来即可；文件较大也可用邮件。</p>
-      <p style="font-size:14px"><b>1747529039@qq.com</b></p>
-      <p style="font-size:12.5px;color:#9a9183">我们会在 1–2 个工作日内回复。</p>
-    </div>
-    <div class="dlcard">
-      <h3>版权与下架</h3>
-      <p>本站仅提供书目元数据，不含古籍正文。如你认为某条信息涉及权利争议，可通过以上方式联系我们，核实后删除。</p>
+    <div class="note" style="margin-top:18px">
+      <b>购买方式</b><br>
+      扫码支付 ¥99 后，把<b>手机号 + 付款截图</b>发到邮箱 <b>1747529039@qq.com</b>；确认到账后，我们会回复安装包页链接（iOS 为 TestFlight 公测链接）。
     </div>
   </div>
 </section>
 
-<section id="about">
-  <h2>关于与声明</h2>
-  <div class="note">
-    <b>医疗免责声明</b><br>
-    本应用为古籍检索与阅读工具，不提供医疗诊断、治疗方案或用药建议。古籍内容由使用者自行导入，可能存在错误、脱漏或过时之处；AI 生成内容可能不准确。如有健康问题，请咨询执业医师；请勿依据本应用自行用药或延误就医。<br><br>
-    <b>内容说明</b><br>
-    本站仅公开书目元数据（书名、分类、段落数、字数），不存储、不提供古籍全文。App 内的正文由使用者自行导入，仅保存在本机。<br><br>
-    <b>隐私</b><br>
-    App 内导入的内容仅保存在本机；AI 功能仅在使用者主动配置自己的模型密钥时联网。
+<section id="faq">
+  <div class="wrap faq">
+    <h2>常见问题</h2>
+    <div class="sub">买之前你可能想确认的事</div>
+    <details><summary>软件里自带古籍正文吗？</summary><p>App 本体以工具为主，正文由你导入自己合法持有的古籍文件（TXT / PDF / DOCX）。如果你需要现成的古籍资源包，可在购买后联系我们获取说明。</p></details>
+    <details><summary>能导入我自己的书吗？</summary><p>可以。一部书一个文件，App 会自动分章分段并建立索引，导入后即可按段落检索。</p></details>
+    <details><summary>不用 AI 能不能正常用？</summary><p>能。检索、辨证、星图、词库、小库都不需要联网；AI 只是可选的第四层，需要你自行填写第三方模型密钥。</p></details>
+    <details><summary>我的数据会上传吗？</summary><p>不会。导入的文本、词库修改、笔记都存在本机；卸载即删除，也可以导出数据包自行备份。</p></details>
+    <details><summary>买一次能装几台设备？</summary><p>授权购买者本人使用，可在自己的多台设备上安装；请勿转发安装包或公测链接。</p></details>
+    <details><summary>后续更新怎么算？</summary><p>同一大版本内的小版本更新免费；跨大版本的功能升级会另行说明。</p></details>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
     <span>© 2026 科文中医 · 古籍检索</span>
-    <span>书目资料共 <b id="fcount">128</b> 部</span>
-    <span style="margin-left:auto">本页不提供古籍全文下载</span>
+    <span>公众号：铁锅炖学派</span>
+    <span>邮箱：1747529039@qq.com</span>
+    <span style="margin-left:auto">本站不提供古籍全文</span>
   </div>
 </footer>
 
-<dialog id="dlg">
-  <div class="dlg">
-    <h3 id="dName"></h3>
-    <div class="meta" id="dMeta"></div>
-    <table>
-      <tr><td>分类</td><td id="dCat"></td></tr>
-      <tr><td>段落</td><td id="dParas"></td></tr>
-      <tr><td>字数</td><td id="dChars"></td></tr>
-      <tr><td>章节</td><td id="dChapters"></td></tr>
-    </table>
-    <p style="color:var(--ink2);font-size:13.5px">正文不在此提供。可在 App 内导入你合法持有的该书文本后检索阅读。</p>
-    <button class="btn close" onclick="document.getElementById('dlg').close()">关闭</button>
-  </div>
-</dialog>
+<div id="lightbox"><img id="lightboxImg" alt=""></div>
+<div id="payModal"></div>
 
 <script>
-const DATA = {"books": [{"id": "bencaogangmu", "name": "本草纲目", "cat": "本草", "paras": 35532, "chars": 1870161, "chapters": 63}, {"id": "jingyuequanshu", "name": "景岳全书", "cat": "方术", "paras": 14196, "chars": 1032338, "chapters": 42}, {"id": "zhengleibencao", "name": "证类本草", "cat": "本草", "paras": 9435, "chars": 812696, "chapters": 56}, {"id": "waitaimiyao", "name": "外台秘要", "cat": "方术", "paras": 21118, "chars": 784518, "chapters": 63}, {"id": "bencaopinhuijingyao", "name": "本草品汇精要", "cat": "本草", "paras": 5493, "chars": 611463, "chapters": 82}, {"id": "yixuezhongzhongcanxilu", "name": "医学衷中参西录", "cat": "方术", "paras": 4943, "chars": 545571, "chapters": 433}, {"id": "qianjinyaofang", "name": "备急千金要方", "cat": "方术", "paras": 13287, "chars": 504876, "chapters": 34}, {"id": "benjingshuzheng", "name": "本经疏证", "cat": "本草", "paras": 3778, "chars": 486562, "chapters": 3}, {"id": "qianjinyifang", "name": "千金翼方", "cat": "方术", "paras": 11220, "chars": 369659, "chapters": 307}, {"id": "shennongbencaojingshu", "name": "神农本草经疏", "cat": "本草", "paras": 5201, "chars": 356254, "chapters": 49}, {"id": "b8f1e6451", "name": "竹亭医案", "cat": "医案", "paras": 6089, "chars": 316207, "chapters": 10}, {"id": "beea18e32", "name": "临证指南医案", "cat": "医案", "paras": 6988, "chars": 300224, "chapters": 11}, {"id": "b27fba060", "name": "张聿青医案", "cat": "医案", "paras": 4381, "chars": 289377, "chapters": 22}, {"id": "b390a3766", "name": "古今医案按", "cat": "医案", "paras": 1878, "chars": 279801, "chapters": 11}, {"id": "bencaogangmushiyi", "name": "本草纲目拾遗", "cat": "本草", "paras": 3684, "chars": 238044, "chapters": 22}, {"id": "b355b8b21", "name": "曹沧洲医案", "cat": "医案", "paras": 3430, "chars": 219542, "chapters": 12}, {"id": "bencaozhengyi", "name": "本草正义", "cat": "本草", "paras": 1605, "chars": 214480, "chapters": 12}, {"id": "jufang", "name": "太平惠民和剂局方", "cat": "方术", "paras": 3671, "chars": 189195, "chapters": 17}, {"id": "benjingfengyuan", "name": "本经逢原", "cat": "本草", "paras": 2926, "chars": 173259, "chapters": 34}, {"id": "bencaocongxin", "name": "本草从新", "cat": "本草", "paras": 2254, "chars": 171158, "chapters": 20}, {"id": "bencaotujing", "name": "本草图经", "cat": "本草", "paras": 1668, "chars": 170461, "chapters": 22}, {"id": "b919df372", "name": "王孟英医案", "cat": "医案", "paras": 753, "chars": 168969, "chapters": 3}, {"id": "b75623e70", "name": "齐氏医案", "cat": "医案", "paras": 1768, "chars": 168071, "chapters": 7}, {"id": "rumenshiqin", "name": "儒门事亲", "cat": "方术", "paras": 2759, "chars": 167897, "chapters": 31}, {"id": "xinxiubencao", "name": "新修本草", "cat": "本草", "paras": 4271, "chars": 159130, "chapters": 44}, {"id": "b987b2c25", "name": "环溪草堂医案", "cat": "医案", "paras": 3229, "chars": 151247, "chapters": 5}, {"id": "zhengyinmaizhi", "name": "症因脉治", "cat": "方术", "paras": 4459, "chars": 149893, "chapters": 6}, {"id": "danxixinfa", "name": "丹溪心法", "cat": "方术", "paras": 4004, "chars": 149658, "chapters": 7}, {"id": "b119271c3", "name": "王氏医案绎注", "cat": "医案", "paras": 513, "chars": 149524, "chapters": 11}, {"id": "bencaomengquan", "name": "本草蒙筌", "cat": "本草", "paras": 1169, "chars": 149300, "chapters": 14}, {"id": "bencaobeiyao", "name": "本草备要", "cat": "本草", "paras": 2091, "chars": 135098, "chapters": 10}, {"id": "b59f9cce3", "name": "孙氏医案", "cat": "医案", "paras": 537, "chars": 134997, "chapters": 1}, {"id": "b87b968b7", "name": "吴鞠通医案", "cat": "医案", "paras": 3095, "chars": 132946, "chapters": 6}, {"id": "b0493c91b", "name": "丁甘仁医案", "cat": "医案", "paras": 1506, "chars": 132214, "chapters": 9}, {"id": "b2be5fe1a", "name": "孙文垣医案", "cat": "医案", "paras": 821, "chars": 127429, "chapters": 6}, {"id": "bencaojingjizhu", "name": "本草经集注", "cat": "本草", "paras": 2604, "chars": 125875, "chapters": 8}, {"id": "wenbingtiaobian", "name": "温病条辨", "cat": "方术", "paras": 1462, "chars": 116848, "chapters": 2}, {"id": "b09112c7a", "name": "柳选四家医案", "cat": "医案", "paras": 2941, "chars": 116453, "chapters": 91}, {"id": "bedd25947", "name": "得心集医案", "cat": "医案", "paras": 1020, "chars": 115067, "chapters": 17}, {"id": "depeibencao", "name": "得配本草", "cat": "本草", "paras": 3105, "chars": 104112, "chapters": 52}, {"id": "b12da4a60", "name": "王旭高临证医案", "cat": "医案", "paras": 2017, "chars": 101055, "chapters": 27}, {"id": "bencaochongyuan", "name": "本草崇原", "cat": "本草", "paras": 1182, "chars": 94856, "chapters": 1}, {"id": "b78ad93a0", "name": "湖岳村叟医案", "cat": "医案", "paras": 1214, "chars": 86603, "chapters": 1}, {"id": "b68a12689", "name": "孤鹤医案", "cat": "医案", "paras": 1611, "chars": 85953, "chapters": 1}, {"id": "b4781447a", "name": "程杏轩医案", "cat": "医案", "paras": 528, "chars": 85166, "chapters": 2}, {"id": "b303ae93b", "name": "古今医案按选", "cat": "医案", "paras": 594, "chars": 80710, "chapters": 5}, {"id": "shennongbencaojing", "name": "神农本草经", "cat": "本草", "paras": 1925, "chars": 79856, "chapters": 4}, {"id": "diannanbencao", "name": "滇南本草", "cat": "本草", "paras": 2614, "chars": 78012, "chapters": 2}, {"id": "b119293ce", "name": "王氏医案续编", "cat": "医案", "paras": 384, "chars": 77793, "chapters": 3}, {"id": "b03571fc6", "name": "增补评注柳选医案", "cat": "医案", "paras": 2236, "chars": 76464, "chapters": 58}, {"id": "ba0774942", "name": "余无言医案", "cat": "医案", "paras": 751, "chars": 73105, "chapters": 1}, {"id": "b2aea0e32", "name": "王九峰医案（一）", "cat": "医案", "paras": 1481, "chars": 70257, "chapters": 3}, {"id": "b2aea55d6", "name": "王九峰医案（二）", "cat": "医案", "paras": 1258, "chars": 67386, "chapters": 1}, {"id": "bdb2239f4", "name": "素圃医案", "cat": "医案", "paras": 212, "chars": 66008, "chapters": 5}, {"id": "jinkuiyaolue", "name": "金匮要略方论", "cat": "方术", "paras": 1630, "chars": 64820, "chapters": 19}, {"id": "xuanminglunfang", "name": "黄帝素问宣明论方", "cat": "方术", "paras": 1459, "chars": 62635, "chapters": 21}, {"id": "b286ea2db", "name": "叶天士曹仁伯何元长医案", "cat": "医案", "paras": 1625, "chars": 61132, "chapters": 1}, {"id": "shanghanlun_songben", "name": "伤寒论（宋本）", "cat": "方术", "paras": 1183, "chars": 59545, "chapters": 21}, {"id": "mingyibielu", "name": "名医别录", "cat": "本草", "paras": 2027, "chars": 58588, "chapters": 2}, {"id": "b2b028993", "name": "石山医案", "cat": "医案", "paras": 520, "chars": 58416, "chapters": 1}, {"id": "tangyebencao", "name": "汤液本草", "cat": "本草", "paras": 1656, "chars": 56876, "chapters": 13}, {"id": "b69c2e739", "name": "汪艺香先生医案", "cat": "医案", "paras": 914, "chars": 56659, "chapters": 1}, {"id": "b65d4d0b8", "name": "剑慧草堂医案", "cat": "医案", "paras": 1560, "chars": 56378, "chapters": 1}, {"id": "b9f62c50f", "name": "临诊医案", "cat": "医案", "paras": 671, "chars": 55999, "chapters": 1}, {"id": "ba85d7fa9", "name": "叶氏医案存真", "cat": "医案", "paras": 1269, "chars": 53536, "chapters": 4}, {"id": "bd9c30659", "name": "沈菊人医案", "cat": "医案", "paras": 1253, "chars": 53494, "chapters": 1}, {"id": "yixueqiyuan", "name": "医学启源", "cat": "方术", "paras": 837, "chars": 52366, "chapters": 1}, {"id": "b2be3d248", "name": "邵兰荪医案", "cat": "医案", "paras": 1063, "chars": 51127, "chapters": 5}, {"id": "be8f63115", "name": "叶天士医案精华", "cat": "医案", "paras": 747, "chars": 51078, "chapters": 1}, {"id": "lanshimizang", "name": "兰室秘藏", "cat": "方术", "paras": 1321, "chars": 49888, "chapters": 22}, {"id": "b11798f22", "name": "王氏医案三编", "cat": "医案", "paras": 190, "chars": 47032, "chapters": 4}, {"id": "bc07fd78a", "name": "陈莲舫医案", "cat": "医案", "paras": 1160, "chars": 43508, "chapters": 1}, {"id": "piweilun", "name": "脾胃论", "cat": "方术", "paras": 545, "chars": 43300, "chapters": 1}, {"id": "b7174eb03", "name": "遯园医案", "cat": "医案", "paras": 186, "chars": 42553, "chapters": 1}, {"id": "b4c7fa44c", "name": "醉花窗医案", "cat": "医案", "paras": 258, "chars": 42547, "chapters": 1}, {"id": "bef10e7ea", "name": "扫叶庄医案", "cat": "医案", "paras": 1300, "chars": 42265, "chapters": 5}, {"id": "ba76d5758", "name": "沈氏医案", "cat": "医案", "paras": 559, "chars": 42020, "chapters": 1}, {"id": "b4e7c1436", "name": "千里医案", "cat": "医案", "paras": 477, "chars": 40562, "chapters": 6}, {"id": "b3a9e0c5f", "name": "北山医案", "cat": "医案", "paras": 447, "chars": 39795, "chapters": 1}, {"id": "b4d42a8b0", "name": "柳宝诒医论医案", "cat": "医案", "paras": 654, "chars": 37536, "chapters": 19}, {"id": "b3ef693f9", "name": "未刻本叶氏医案", "cat": "医案", "paras": 2388, "chars": 37163, "chapters": 1}, {"id": "b43bd1235", "name": "三家医案合刻", "cat": "医案", "paras": 886, "chars": 36992, "chapters": 4}, {"id": "b4f7de639", "name": "疡科指南医案", "cat": "医案", "paras": 755, "chars": 35500, "chapters": 28}, {"id": "yinshanzhengyao", "name": "饮膳正要", "cat": "本草", "paras": 1518, "chars": 35445, "chapters": 4}, {"id": "bcc8e2ffa", "name": "也是山人医案", "cat": "医案", "paras": 861, "chars": 34536, "chapters": 1}, {"id": "b260c0de8", "name": "缪松心医案", "cat": "医案", "paras": 1180, "chars": 33140, "chapters": 1}, {"id": "b2be36bc4", "name": "曹仁伯医案", "cat": "医案", "paras": 725, "chars": 30449, "chapters": 1}, {"id": "b9d3ff7c1", "name": "丛桂草堂医案", "cat": "医案", "paras": 124, "chars": 30148, "chapters": 5}, {"id": "b97f37d29", "name": "王氏医案", "cat": "医案", "paras": 124, "chars": 29822, "chapters": 1}, {"id": "suwenxuanji", "name": "素问玄机原病式", "cat": "方术", "paras": 305, "chars": 29304, "chapters": 1}, {"id": "b5414056c", "name": "崇实堂医案", "cat": "医案", "paras": 69, "chars": 28983, "chapters": 1}, {"id": "yuqiuyaojie", "name": "玉楸药解", "cat": "本草", "paras": 792, "chars": 28892, "chapters": 10}, {"id": "b8b6cf34a", "name": "顾氏医案", "cat": "医案", "paras": 1084, "chars": 28687, "chapters": 1}, {"id": "b317c2e3d", "name": "费绳甫先生医案", "cat": "医案", "paras": 499, "chars": 28531, "chapters": 1}, {"id": "b86f89726", "name": "洄溪医案按", "cat": "医案", "paras": 197, "chars": 27507, "chapters": 1}, {"id": "bb8b996df", "name": "洄溪医案", "cat": "医案", "paras": 194, "chars": 27429, "chapters": 1}, {"id": "gezhiyulun", "name": "格致余论", "cat": "方术", "paras": 149, "chars": 27050, "chapters": 1}, {"id": "b62573fa8", "name": "李冠仙医案", "cat": "医案", "paras": 65, "chars": 27004, "chapters": 1}, {"id": "b0e923f05", "name": "龙砂八家医案", "cat": "医案", "paras": 552, "chars": 26590, "chapters": 1}, {"id": "bae70cf3d", "name": "张畹香医案", "cat": "医案", "paras": 414, "chars": 26093, "chapters": 1}, {"id": "b6e80722d", "name": "青霞医案", "cat": "医案", "paras": 394, "chars": 25304, "chapters": 1}, {"id": "leigongpaozhilun", "name": "雷公炮炙论", "cat": "本草", "paras": 821, "chars": 25239, "chapters": 2}, {"id": "ba01be974", "name": "金台医案", "cat": "医案", "paras": 247, "chars": 25104, "chapters": 1}, {"id": "b805ec797", "name": "邵氏医案", "cat": "医案", "paras": 435, "chars": 25022, "chapters": 1}, {"id": "bfbd04b5a", "name": "江泽之医案", "cat": "医案", "paras": 627, "chars": 24805, "chapters": 1}, {"id": "ba4ceed4d", "name": "沈俞医案合钞", "cat": "医案", "paras": 558, "chars": 24713, "chapters": 1}, {"id": "paozhidafa", "name": "炮炙大法", "cat": "本草", "paras": 962, "chars": 24621, "chapters": 15}, {"id": "b3b1e2566", "name": "旌孝堂医案", "cat": "医案", "paras": 617, "chars": 24592, "chapters": 1}, {"id": "neiwaishangbianhuo", "name": "内外伤辨惑论", "cat": "方术", "paras": 352, "chars": 23381, "chapters": 1}, {"id": "bdc76af79", "name": "王仲奇医案", "cat": "医案", "paras": 246, "chars": 21791, "chapters": 1}, {"id": "b9dee2892", "name": "里中医案", "cat": "医案", "paras": 336, "chars": 20394, "chapters": 1}, {"id": "bda366665", "name": "叶天士医案", "cat": "医案", "paras": 333, "chars": 19734, "chapters": 1}, {"id": "b617a56a1", "name": "静香楼医案", "cat": "医案", "paras": 711, "chars": 18913, "chapters": 33}, {"id": "b3db1837a", "name": "松心医案笔记", "cat": "医案", "paras": 221, "chars": 17929, "chapters": 1}, {"id": "b85de2e0b", "name": "马培之医案", "cat": "医案", "paras": 436, "chars": 16789, "chapters": 1}, {"id": "baa56146f", "name": "旧德堂医案", "cat": "医案", "paras": 76, "chars": 15934, "chapters": 1}, {"id": "b0114de49", "name": "黄澹翁医案", "cat": "医案", "paras": 389, "chars": 15512, "chapters": 5}, {"id": "b91f50b2d", "name": "花韵楼医案", "cat": "医案", "paras": 368, "chars": 15254, "chapters": 1}, {"id": "jufafahui", "name": "局方发挥", "cat": "方术", "paras": 72, "chars": 15248, "chapters": 1}, {"id": "b5e89c3e2", "name": "爱月庐医案", "cat": "医案", "paras": 127, "chars": 13801, "chapters": 1}, {"id": "b7560b106", "name": "曹仁伯医案论", "cat": "医案", "paras": 131, "chars": 13139, "chapters": 1}, {"id": "b9fe3e432", "name": "何澹安医案", "cat": "医案", "paras": 445, "chars": 12967, "chapters": 1}, {"id": "b77397a5f", "name": "徐渡渔先生医案", "cat": "医案", "paras": 423, "chars": 12233, "chapters": 1}, {"id": "wupubencao", "name": "吴普本草", "cat": "本草", "paras": 683, "chars": 10982, "chapters": 7}, {"id": "b649ee2d6", "name": "退庵医案", "cat": "医案", "paras": 144, "chars": 10143, "chapters": 1}, {"id": "bd541a968", "name": "许氏医案", "cat": "医案", "paras": 46, "chars": 8553, "chapters": 1}, {"id": "b926b7b6b", "name": "一瓢医案", "cat": "医案", "paras": 162, "chars": 8479, "chapters": 1}, {"id": "zangfuyongyaoshi", "name": "脏腑虚实标本用药式", "cat": "方术", "paras": 263, "chars": 6090, "chapters": 1}], "cats": {"本草": 25, "方术": 21, "医案": 82}, "stats": {"books": 128, "paras": 271908, "chars": 16143384, "words": 2478, "herbs": 415}};
-const state = { cat: '全部', q: '', n: 24 };
-const grid = document.getElementById('grid');
-const fm = n => n >= 10000 ? (n/10000).toFixed(n>=100000?0:1) + ' 万' : String(n);
-function render(){
-  const list = DATA.books.filter(b =>
-    (state.cat === '全部' || b.cat === state.cat) &&
-    (!state.q || b.name.includes(state.q))
-  );
-  document.getElementById('bcount').textContent = list.length;
-  grid.innerHTML = list.slice(0, state.n).map(b => `
-    <div class="card" data-id="${b.id}">
-      <div class="nm">${b.name}</div>
-      <div class="mt"><span class="tag">${b.cat}</span>${b.paras} 段 · ${fm(b.chars)}字</div>
-    </div>`).join('');
-  document.getElementById('more').style.display = list.length > state.n ? '' : 'none';
-  grid.querySelectorAll('.card').forEach(c => c.onclick = () => show(c.dataset.id));
-}
-function show(id){
-  const b = DATA.books.find(x => x.id === id);
-  if(!b) return;
-  document.getElementById('dName').textContent = b.name;
-  document.getElementById('dMeta').textContent = b.cat + ' · 共 ' + b.paras + ' 段';
-  document.getElementById('dCat').textContent = b.cat;
-  document.getElementById('dParas').textContent = b.paras + ' 段';
-  document.getElementById('dChars').textContent = b.chars.toLocaleString() + ' 字';
-  document.getElementById('dChapters').textContent = b.chapters + ' 章';
-  document.getElementById('dlg').showModal();
-}
-document.querySelectorAll('.chip[data-cat]').forEach(c => c.onclick = () => {
-  document.querySelectorAll('.chip[data-cat]').forEach(x => x.classList.remove('on'));
-  c.classList.add('on');
-  state.cat = c.dataset.cat; state.n = 24; render();
-});
-document.getElementById('q').oninput = e => { state.q = e.target.value.trim(); state.n = 24; render(); };
-document.getElementById('more').onclick = () => { state.n += 24; render(); };
-render();
-</script>
-<div id="payModal" style="display:none;position:fixed;inset:0;background:rgba(10,20,40,.55);z-index:9999;align-items:center;justify-content:center;padding:16px">
-  <div style="background:#fff;border-radius:16px;max-width:400px;width:100%;padding:20px;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.3)">
-    <h3 style="margin:0 0 4px;font-size:18px;color:#152036" id="payTitle">微信扫码支付 ¥99</h3>
-    <div style="color:#8b96ab;font-size:12.5px;margin-bottom:12px" id="paySub">支付成功后自动解锁下载</div>
-    <img src="pay-qr.jpg" alt="微信支付" style="width:220px;border-radius:12px;border:1px solid #e2e8f4;display:block;margin:0 auto">
-    <div id="payState" style="margin:14px 0 6px;font-size:13.5px;color:#55617a">等待支付…</div>
-    <div style="display:flex;gap:10px;justify-content:center;margin-top:10px">
-      <button class="btn" onclick="kwCheck()">我已支付</button>
-      <button class="btn" onclick="kwClose()">关闭</button>
-    </div>
-    <div style="margin-top:10px;font-size:12px;color:#8b96ab">支付遇到问题？发邮件到 1747529039@qq.com</div>
-  </div>
-</div>
-<script>
-/* ===== 下载付费门禁 =====
-   后端约定（Cloudflare Worker / 任意服务）：
-   GET  {PAY_API}/create?sku=win|apk   -> {order:"xxx"}         创建订单
-   GET  {PAY_API}/status?order=xxx     -> {paid:true|false}     查询支付
-   支付成功回调里由后端标记 paid，并返回下载地址：
-   GET  {PAY_API}/download?order=xxx   -> {url:"https://..."}    一次性/限时下载链接
-*/
-var PAY_API = "";                 // 例如 https://pay.example.workers.dev
-var DOWNLOAD = {                  // 未接入后端时的占位地址（可先填 GitHub Release 链接）
-  win: "",
-  apk: ""
-};
-var _sku = null, _order = null, _timer = null;
-
-function kwBuy(sku){
-  _sku = sku;
-  localStorage.removeItem('kw_paid_' + sku);
-  document.getElementById('payTitle').textContent = (sku === 'win' ? 'Windows 安装包' : '安卓 APK') + ' · ¥99';
-  document.getElementById('payState').textContent = PAY_API ? '正在创建订单…' : '等待支付…（未接入自动核验，支付后点“我已支付”）';
-  document.getElementById('payModal').style.display = 'flex';
-  if (PAY_API) {
-    fetch(PAY_API + '/create?sku=' + sku).then(r => r.json()).then(j => {
-      _order = j.order || null;
-      document.getElementById('payState').textContent = '等待支付…';
-      startPoll();
-    }).catch(() => { document.getElementById('payState').textContent = '订单创建失败，请稍后重试或联系作者'; });
-  }
-}
-
-function startPoll(){
-  clearInterval(_timer);
-  _timer = setInterval(kwCheck, 3000);
-}
-function kwCheck(){
-  if (!_order) { manualUnlock(); return; }
-  fetch(PAY_API + '/status?order=' + encodeURIComponent(_order)).then(r => r.json()).then(j => {
-    if (j && j.paid) {
-      clearInterval(_timer);
-      document.getElementById('payState').textContent = '支付成功，正在解锁…';
-      fetch(PAY_API + '/download?order=' + encodeURIComponent(_order)).then(r => r.json()).then(d => {
-        unlock(_sku, d.url || DOWNLOAD[_sku]);
-      }).catch(() => unlock(_sku, DOWNLOAD[_sku]));
-    }
-  }).catch(() => {});
-}
-function manualUnlock(){
-  /* 未接后端：点击“我已支付”提示联系作者人工开通 */
-  document.getElementById('payState').textContent = '未接入自动核验。请加公众号「铁锅炖学派」发送支付截图，作者会发你安装包。';
-}
-function unlock(sku, url){
-  if (!url) return;
-  localStorage.setItem('kw_paid_' + sku, url);
-  var lock = document.getElementById('lock-' + sku);
-  if (lock) lock.innerHTML = '<a class="btn primary" href="' + url + '" rel="noopener">立即下载</a>';
-  kwClose();
-}
-function kwClose(){ clearInterval(_timer); document.getElementById('payModal').style.display = 'none'; }
-
-/* 已解锁的自动恢复 */
-document.addEventListener('DOMContentLoaded', function(){
-  ['win','apk'].forEach(function(sku){
-    var u = localStorage.getItem('kw_paid_' + sku);
-    if (u) unlock(sku, u);
-  });
-});
-</script>
-
-<div id="kwDlFix"></div>
-<script id="kw-dl-flow">
+var SHOTS = 12;
 (function(){
-  var TF = 'https://testflight.apple.com/join/7K8RWTs2';
-
-  function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
-
-  ready(function(){
-    document.querySelectorAll('#download .dlcard').forEach(function(c){
-      var h = c.querySelector('h3');
-      if (!h || !/iOS/i.test(h.textContent)) return;
-      var lock = c.querySelector('.lock');
-      if (lock) lock.textContent = '公测中 · 付费后发公测链接';
-      var a = c.querySelector('a.btn');
-      if (a) {
-        var b = document.createElement('button');
-        b.className = 'btn primary';
-        b.textContent = '扫码支付后获取公测链接';
-        b.onclick = function(){ window.kwBuy('ios'); };
-        a.parentNode.replaceChild(b, a);
-      }
-    });
+  var g = document.getElementById('gallery');
+  var html = '';
+  for (var i = 1; i <= SHOTS; i++) html += '<img src="img/s' + i + '.jpg" loading="lazy" alt="界面预览 ' + i + '">';
+  g.innerHTML = html;
+  g.addEventListener('click', function(e){
+    if (e.target.tagName !== 'IMG') return;
+    document.getElementById('lightboxImg').src = e.target.src;
+    document.getElementById('lightbox').classList.add('on');
   });
-
-  window.kwClose = function(){
-    var m = document.getElementById('payModal');
-    if (m) m.style.display = 'none';
-  };
-
-  window.kwBuy = function(){
-    var m = document.getElementById('payModal');
-    if (!m) return;
-    m.innerHTML = '<div style="position:relative;background:#fff;border-radius:18px;padding:14px">' +
-      '<button onclick="kwClose()" aria-label="关闭" style="position:absolute;right:8px;top:4px;border:0;background:transparent;font-size:24px;line-height:1;color:#8b96ab;cursor:pointer">×</button>' +
-      '<img src="pay-qr.jpg" alt="微信支付 ¥99" style="width:min(78vw,300px);display:block;border-radius:12px">' +
-      '</div>';
-    m.style.display = 'flex';
-    m.onclick = function(e){ if (e.target === m) kwClose(); };
+  document.getElementById('lightbox').onclick = function(){
+    this.classList.remove('on');
+    document.getElementById('lightboxImg').src = '';
   };
 })();
+
+window.kwClose = function(){ document.getElementById('payModal').style.display = 'none'; };
+window.kwBuy = function(){
+  var m = document.getElementById('payModal');
+  m.innerHTML = '<div style="position:relative;background:#fff;border-radius:18px;padding:14px">' +
+    '<button onclick="kwClose()" aria-label="关闭" style="position:absolute;right:8px;top:4px;border:0;background:transparent;font-size:24px;line-height:1;color:#8b96ab;cursor:pointer">×</button>' +
+    '<img src="pay-qr.jpg" alt="微信支付 ¥99" style="width:min(78vw,300px);display:block;border-radius:12px">' +
+    '</div>';
+  m.style.display = 'flex';
+  m.onclick = function(e){ if (e.target === m) kwClose(); };
+};
 </script>
 </body>
 </html>
